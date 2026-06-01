@@ -15,7 +15,7 @@ local Config = {
     -- Admin Panel Settings
     Panel = {
         Version = "1.0",
-        Title = "💎 RUBIES LAUNCHER",
+        Title = "RUBIES LAUNCHER",
         Key = "auraman",
         AutoDetectGame = true,
         MinimizeOnLoad = false
