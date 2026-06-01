@@ -166,51 +166,118 @@ local function CreateInlineModules()
         
         -- Main frame
         local frame = Instance.new("Frame")
-        frame.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+        frame.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
         frame.BorderSizePixel = 0
-        frame.Size = UDim2.new(0, 500, 0, 400)
-        frame.Position = UDim2.new(0.5, -250, 0.5, -200)
+        frame.Size = UDim2.new(0, 600, 0, 500)
+        frame.Position = UDim2.new(0.5, -300, 0.5, -250)
         frame.ZIndex = 1
         frame.Parent = screenGui
         
-        -- Try to add UICorner (might not exist on old versions)
         pcall(function()
             local corner = Instance.new("UICorner")
-            corner.CornerRadius = UDim.new(0, 15)
+            corner.CornerRadius = UDim.new(0, 20)
             corner.Parent = frame
         end)
         
-        -- Try to add UIStroke (might not exist on old versions)
         pcall(function()
             local stroke = Instance.new("UIStroke")
             stroke.Color = Color3.fromRGB(100, 150, 255)
-            stroke.Thickness = 2
+            stroke.Thickness = 3
             stroke.Parent = frame
         end)
         
-        -- Title
-        local title = Instance.new("TextLabel")
-        title.BackgroundColor3 = Color3.fromRGB(30, 30, 45)
-        title.BorderSizePixel = 0
-        title.TextSize = 18
-        title.TextColor3 = Color3.fromRGB(255, 255, 255)
-        pcall(function() title.Font = Enum.Font.GothamBold end)
-        title.Text = "RUBIES LAUNCHER"
-        title.Size = UDim2.new(1, 0, 0, 50)
-        title.ZIndex = 2
-        title.Parent = frame
+        -- Header
+        local header = Instance.new("TextLabel")
+        header.BackgroundColor3 = Color3.fromRGB(100, 150, 255)
+        header.BorderSizePixel = 0
+        header.TextSize = 24
+        header.TextColor3 = Color3.fromRGB(255, 255, 255)
+        pcall(function() header.Font = Enum.Font.GothamBold end)
+        header.Text = "RUBIES"
+        header.Size = UDim2.new(1, 0, 0, 60)
+        header.ZIndex = 2
+        header.Parent = frame
         
-        -- Content
-        local content = Instance.new("TextLabel")
-        content.BackgroundTransparency = 1
-        content.TextSize = 14
-        content.TextColor3 = Color3.fromRGB(200, 200, 220)
-        pcall(function() content.Font = Enum.Font.Gotham end)
-        content.Text = "Admin Panel Ready!\n\nKey Accepted: auraman\n\nUse this panel to manage scripts."
-        content.Size = UDim2.new(1, -20, 1, -70)
-        content.Position = UDim2.new(0, 10, 0, 50)
-        content.ZIndex = 2
-        content.Parent = frame
+        -- Player Info
+        local playerInfo = Instance.new("TextLabel")
+        playerInfo.BackgroundColor3 = Color3.fromRGB(30, 30, 45)
+        playerInfo.BorderSizePixel = 0
+        playerInfo.TextSize = 12
+        playerInfo.TextColor3 = Color3.fromRGB(180, 180, 200)
+        pcall(function() playerInfo.Font = Enum.Font.Gotham end)
+        playerInfo.Text = "Player: " .. LocalPlayer.Name
+        playerInfo.Size = UDim2.new(1, 0, 0, 30)
+        playerInfo.Position = UDim2.new(0, 0, 1, -30)
+        playerInfo.ZIndex = 2
+        playerInfo.Parent = frame
+        
+        -- ScrollingFrame for games
+        local scrolling = Instance.new("ScrollingFrame")
+        scrolling.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+        scrolling.BorderSizePixel = 0
+        scrolling.Size = UDim2.new(1, 0, 1, -90)
+        scrolling.Position = UDim2.new(0, 0, 0, 60)
+        scrolling.ScrollBarThickness = 4
+        scrolling.CanvasSize = UDim2.new(0, 0, 0, 0)
+        scrolling.ZIndex = 1
+        scrolling.Parent = frame
+        
+        -- UIListLayout for vertical stacking
+        local listLayout = Instance.new("UIListLayout")
+        listLayout.Padding = UDim.new(0, 8)
+        listLayout.FillDirection = Enum.FillDirection.Vertical
+        pcall(function() listLayout.Parent = scrolling end)
+        
+        -- Get games list
+        local games = rubies.Handler:GetGameList()
+        
+        if games and #games > 0 then
+            for i, game in ipairs(games) do
+                local gameBtn = Instance.new("TextButton")
+                gameBtn.BackgroundColor3 = Color3.fromRGB(game.color.R or 100, game.color.G or 100, game.color.B or 100)
+                gameBtn.BorderSizePixel = 0
+                gameBtn.TextSize = 14
+                gameBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+                pcall(function() gameBtn.Font = Enum.Font.GothamBold end)
+                gameBtn.Text = game.icon .. " " .. game.displayName
+                gameBtn.Size = UDim2.new(1, -16, 0, 50)
+                gameBtn.Parent = scrolling
+                
+                -- Add corner radius
+                pcall(function()
+                    local corner = Instance.new("UICorner")
+                    corner.CornerRadius = UDim.new(0, 10)
+                    corner.Parent = gameBtn
+                end)
+                
+                -- Click handler
+                gameBtn.MouseButton1Click:Connect(function()
+                    print("[RUBIES] Clicked: " .. game.displayName)
+                end)
+                
+                gameBtn.MouseEnter:Connect(function()
+                    gameBtn.BackgroundTransparency = 0.2
+                end)
+                
+                gameBtn.MouseLeave:Connect(function()
+                    gameBtn.BackgroundTransparency = 0
+                end)
+            end
+        end
+        
+        -- Update canvas size
+        local function updateScroll()
+            local totalSize = 0
+            for _, child in ipairs(scrolling:GetChildren()) do
+                if child:IsA("GuiObject") then
+                    totalSize = totalSize + child.Size.Y.Offset + 8
+                end
+            end
+            scrolling.CanvasSize = UDim2.new(0, 0, 0, totalSize)
+        end
+        
+        task.wait(0.1)
+        updateScroll()
         
         print("[RUBIES] UI Created!")
         return screenGui
