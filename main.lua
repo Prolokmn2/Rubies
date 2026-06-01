@@ -107,6 +107,7 @@ local function CreateInlineModules()
         title.Font = Enum.Font.GothamBold
         title.Text = "RUBIES KEY"
         title.Size = UDim2.new(1, 0, 0, 50)
+        title.ZIndex = 3
         title.Parent = container
         
         -- Input
@@ -119,6 +120,7 @@ local function CreateInlineModules()
         input.PlaceholderText = "Enter key..."
         input.Size = UDim2.new(1, -20, 0, 40)
         input.Position = UDim2.new(0, 10, 0, 55)
+        input.ZIndex = 3
         input.Parent = container
         
         -- Button
@@ -131,6 +133,7 @@ local function CreateInlineModules()
         btn.Text = "VERIFY"
         btn.Size = UDim2.new(1, -20, 0, 35)
         btn.Position = UDim2.new(0, 10, 0, 100)
+        btn.ZIndex = 3
         btn.Parent = container
         
         btn.MouseButton1Click:Connect(function()
