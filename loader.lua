@@ -6,10 +6,17 @@
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Prolokmn2/Rubies/main/loader.lua"))()
 ]]
 
+-- Prevent duplicate runs
+if _G.RubiesLoaderRunning then
+    print("[LOADER] Already running!")
+    return
+end
+_G.RubiesLoaderRunning = true
+
 local CONFIG_URL = "https://raw.githubusercontent.com/Prolokmn2/Rubies/main/config.lua"
 local MAIN_URL = "https://raw.githubusercontent.com/Prolokmn2/Rubies/main/main.lua"
 
-print("[RUBIES LOADER v1.0] Loading...")
+print("[LOADER v1.0] Starting...")
 
 -- Load configuration
 local function LoadConfig()
@@ -60,3 +67,4 @@ local function Initialize()
 end
 
 Initialize()
+_G.RubiesLoaderRunning = false

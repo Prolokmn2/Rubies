@@ -198,7 +198,7 @@ function UI:CreateLauncherPanel(parent, rubies)
     title.TextSize = 20
     title.TextColor3 = Color3.fromRGB(255, 255, 255)
     title.Font = Enum.Font.GothamBold
-    title.Text = "💎 RUBIES LAUNCHER"
+    title.Text = "RUBIES LAUNCHER"
     title.Size = UDim2.new(1, -80, 1, 0)
     title.Position = UDim2.new(0, 20, 0, 0)
     title.TextXAlignment = Enum.TextXAlignment.Left
@@ -211,7 +211,7 @@ function UI:CreateLauncherPanel(parent, rubies)
     closeBtn.TextSize = 20
     closeBtn.TextColor3 = Color3.fromRGB(255, 100, 100)
     closeBtn.Font = Enum.Font.GothamBold
-    closeBtn.Text = "✕"
+    closeBtn.Text = "X"
     closeBtn.Size = UDim2.new(0, 40, 0, 40)
     closeBtn.Position = UDim2.new(1, -50, 0, 10)
     closeBtn.Parent = header

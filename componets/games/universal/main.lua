@@ -30,7 +30,7 @@ local tpGuiOpen = false
 
 -- Initialize universal scripts
 function Universal:Initialize(parentUI)
-    print("🌍 Initializing Universal Scripts...")
+    print("[UNIVERSAL] Initializing...")
     
     self:CreateUniversalUI(parentUI)
     self:SetupCharacterHandling()

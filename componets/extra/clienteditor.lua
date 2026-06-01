@@ -11,7 +11,7 @@ local LocalPlayer = Players.LocalPlayer
 local Character = LocalPlayer.Character
 
 function ClientEditor:Initialize(parentUI)
-    print("🔧 Client Editor Initializing...")
+    print("[CLIENTEDITOR] Initializing...")
     self:CreateDebugUI()
 end
 

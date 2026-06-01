@@ -4,19 +4,42 @@
     Features: Key system, Game detection, Notifications, Advanced UI
 ]]
 
+-- Prevent running multiple times
+if _G.RubiesInitialized then
+    print("[RUBIES] Already initialized! Ignoring duplicate execution.")
+    return
+end
+
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 
--- Load modules
-local componets = script.Parent:WaitForChild("componets")
-local KeySystem = require(componets.extra.keysystem)
-local Handler = require(componets.handeler)
-local UI = require(componets.ui)
-local Notifications = require(componets.notifications)
-
 local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+
+-- Try to load modules from script context (if in game)
+local componets
+local KeySystem, Handler, UI, Notifications
+
+if script and script.Parent then
+    -- Script context available (normal execution)
+    componets = script.Parent:WaitForChild("componets")
+    KeySystem = require(componets.extra.keysystem)
+    Handler = require(componets.handeler)
+    UI = require(componets.ui)
+    Notifications = require(componets.notifications)
+else
+    -- Fallback: load from game if available
+    componets = game.ReplicatedStorage:FindFirstChild("componets") or game.ServerScriptService:FindFirstChild("componets")
+    if componets then
+        KeySystem = require(componets.extra.keysystem)
+        Handler = require(componets.handeler)
+        UI = require(componets.ui)
+        Notifications = require(componets.notifications)
+    else
+        error("[RUBIES] Could not find componets folder!")
+    end
+end
 
 -- Global state
 local Rubies = {
@@ -30,7 +53,7 @@ local Rubies = {
 
 -- Initialize key system first
 local function InitKeySystem()
-    print("🔐 Rubies: Key System Initializing...")
+    print("[RUBIES] Key System Initializing...")
     
     local keyGUI = KeySystem:CreateKeyPrompt(PlayerGui)
     
@@ -40,34 +63,35 @@ local function InitKeySystem()
     connection = KeySystem.KeyVerified:Connect(function()
         verified = true
         connection:Disconnect()
-        print("✅ Rubies: Key verified!")
+        print("[RUBIES] Key verified!")
         InitMainPanel()
     end)
 end
 
 -- Initialize main admin panel
 local function InitMainPanel()
-    print("🚀 Rubies: Initializing Main Panel...")
+    print("[RUBIES] Initializing Main Panel...")
     
     -- Detect current game
     Rubies.CurrentGame = Handler:DetectGame()
-    print("📍 Detected Game:", Rubies.CurrentGame)
+    print("[RUBIES] Detected Game: " .. Rubies.CurrentGame)
     
     -- Create main launcher GUI
     local launcherGUI = UI:CreateLauncherPanel(PlayerGui, Rubies)
+    print("[RUBIES] Main panel created!")
     
     -- Show recommendation notification
-    if Rubies.CurrentGame then
+    if Rubies.CurrentGame and Rubies.CurrentGame ~= "universal" then
         task.wait(0.5)
         Notifications:Create({
-            Title = "🎮 Recommended Script",
+            Title = "Recommended Script",
             Message = "Run " .. Rubies.CurrentGame .. " script?",
             Duration = 5,
             Sound = true,
             Callback = function()
                 Handler:LoadGameScript(Rubies.CurrentGame, launcherGUI)
                 Notifications:Create({
-                    Title = "✅ Script Loaded",
+                    Title = "Script Loaded",
                     Message = Rubies.CurrentGame .. " script is now active!",
                     Duration = 3,
                     Sound = true
@@ -80,12 +104,16 @@ local function InitMainPanel()
     Handler:LoadUniversalScripts(launcherGUI)
     
     Rubies.Initialized = true
+    print("[RUBIES] Initialization complete!")
 end
 
 -- Start the system
-print("🌟 Rubies Admin Panel v1.0 Initializing...")
+print("[RUBIES] v1.0 Initializing...")
 InitKeySystem()
+
+-- Mark as initialized globally (prevent double-run)
+_G.RubiesInitialized = true
 
 -- Return global Rubies for debugging
 _G.Rubies = Rubies
-print("ℹ️  Access Rubies via _G.Rubies")
+print("[RUBIES] Access Rubies via _G.Rubies")
