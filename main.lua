@@ -90,7 +90,7 @@ local function CreateInlineModules()
         title.BackgroundTransparency = 1
         title.TextSize = 18
         title.TextColor3 = Color3.fromRGB(255, 255, 255)
-        title.Font = Enum.Font.GothamBold
+        pcall(function() title.Font = Enum.Font.GothamBold end)
         title.Text = "RUBIES"
         title.Size = UDim2.new(1, 0, 0, 40)
         title.Parent = container
@@ -102,9 +102,9 @@ local function CreateInlineModules()
         input.BorderSizePixel = 1
         input.TextSize = 14
         input.TextColor3 = Color3.fromRGB(255, 255, 255)
-        input.Font = Enum.Font.Gotham
+        pcall(function() input.Font = Enum.Font.Gotham end)
         input.PlaceholderText = "Key..."
-        input.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
+        pcall(function() input.PlaceholderColor3 = Color3.fromRGB(150, 150, 150) end)
         input.Size = UDim2.new(1, -20, 0, 35)
         input.Position = UDim2.new(0, 10, 0, 50)
         input.Parent = container
@@ -115,7 +115,7 @@ local function CreateInlineModules()
         btn.BorderSizePixel = 0
         btn.TextSize = 13
         btn.TextColor3 = Color3.fromRGB(255, 255, 255)
-        btn.Font = Enum.Font.GothamBold
+        pcall(function() btn.Font = Enum.Font.GothamBold end)
         btn.Text = "VERIFY"
         btn.Size = UDim2.new(1, -20, 0, 30)
         btn.Position = UDim2.new(0, 10, 0, 95)
@@ -173,14 +173,20 @@ local function CreateInlineModules()
         frame.ZIndex = 1
         frame.Parent = screenGui
         
-        local corner = Instance.new("UICorner")
-        corner.CornerRadius = UDim.new(0, 15)
-        corner.Parent = frame
+        -- Try to add UICorner (might not exist on old versions)
+        pcall(function()
+            local corner = Instance.new("UICorner")
+            corner.CornerRadius = UDim.new(0, 15)
+            corner.Parent = frame
+        end)
         
-        local stroke = Instance.new("UIStroke")
-        stroke.Color = Color3.fromRGB(100, 150, 255)
-        stroke.Thickness = 2
-        stroke.Parent = frame
+        -- Try to add UIStroke (might not exist on old versions)
+        pcall(function()
+            local stroke = Instance.new("UIStroke")
+            stroke.Color = Color3.fromRGB(100, 150, 255)
+            stroke.Thickness = 2
+            stroke.Parent = frame
+        end)
         
         -- Title
         local title = Instance.new("TextLabel")
@@ -188,7 +194,7 @@ local function CreateInlineModules()
         title.BorderSizePixel = 0
         title.TextSize = 18
         title.TextColor3 = Color3.fromRGB(255, 255, 255)
-        title.Font = Enum.Font.GothamBold
+        pcall(function() title.Font = Enum.Font.GothamBold end)
         title.Text = "RUBIES LAUNCHER"
         title.Size = UDim2.new(1, 0, 0, 50)
         title.ZIndex = 2
@@ -199,7 +205,7 @@ local function CreateInlineModules()
         content.BackgroundTransparency = 1
         content.TextSize = 14
         content.TextColor3 = Color3.fromRGB(200, 200, 220)
-        content.Font = Enum.Font.Gotham
+        pcall(function() content.Font = Enum.Font.Gotham end)
         content.Text = "Admin Panel Ready!\n\nKey Accepted: auraman\n\nUse this panel to manage scripts."
         content.Size = UDim2.new(1, -20, 1, -70)
         content.Position = UDim2.new(0, 10, 0, 50)
@@ -250,8 +256,13 @@ local function Initialize()
             Handler = Handler
         }
         
-        UI:CreateLauncherPanel(PlayerGui, Rubies)
-        Handler:LoadUniversalScripts()
+        pcall(function()
+            UI:CreateLauncherPanel(PlayerGui, Rubies)
+        end)
+        
+        pcall(function()
+            Handler:LoadUniversalScripts()
+        end)
         
         print("[RUBIES] Ready!")
     else
@@ -260,4 +271,6 @@ local function Initialize()
 end
 
 _G.RubiesInitialized = true
-Initialize()
+pcall(function()
+    Initialize()
+end)
