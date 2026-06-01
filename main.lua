@@ -76,64 +76,49 @@ local function CreateInlineModules()
         screenGui.ResetOnSpawn = false
         screenGui.Parent = parent
         
-        -- Background
-        local bg = Instance.new("TextButton")
-        bg.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-        bg.BackgroundTransparency = 0.5
-        bg.BorderSizePixel = 0
-        bg.Size = UDim2.new(1, 0, 1, 0)
-        bg.Text = ""
-        bg.ZIndex = 1
-        bg.Parent = screenGui
-        
-        -- Container
+        -- Container (no background behind it, just the dialog)
         local container = Instance.new("Frame")
         container.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
-        container.BorderSizePixel = 0
-        container.Size = UDim2.new(0, 400, 0, 200)
-        container.Position = UDim2.new(0.5, -200, 0.5, -100)
-        container.ZIndex = 2
+        container.BorderColor3 = Color3.fromRGB(100, 150, 255)
+        container.BorderSizePixel = 2
+        container.Size = UDim2.new(0, 300, 0, 180)
+        container.Position = UDim2.new(0.5, -150, 0.5, -90)
         container.Parent = screenGui
-        
-        local corner = Instance.new("UICorner")
-        corner.CornerRadius = UDim.new(0, 12)
-        corner.Parent = container
         
         -- Title
         local title = Instance.new("TextLabel")
         title.BackgroundTransparency = 1
-        title.TextSize = 20
+        title.TextSize = 18
         title.TextColor3 = Color3.fromRGB(255, 255, 255)
         title.Font = Enum.Font.GothamBold
-        title.Text = "RUBIES KEY"
-        title.Size = UDim2.new(1, 0, 0, 50)
-        title.ZIndex = 3
+        title.Text = "RUBIES"
+        title.Size = UDim2.new(1, 0, 0, 40)
         title.Parent = container
         
         -- Input
         local input = Instance.new("TextBox")
-        input.BackgroundColor3 = Color3.fromRGB(35, 35, 45)
-        input.BorderSizePixel = 0
+        input.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+        input.BorderColor3 = Color3.fromRGB(100, 100, 120)
+        input.BorderSizePixel = 1
         input.TextSize = 14
         input.TextColor3 = Color3.fromRGB(255, 255, 255)
         input.Font = Enum.Font.Gotham
-        input.PlaceholderText = "Enter key..."
-        input.Size = UDim2.new(1, -20, 0, 40)
-        input.Position = UDim2.new(0, 10, 0, 55)
-        input.ZIndex = 3
+        input.PlaceholderText = "Key..."
+        input.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
+        input.Size = UDim2.new(1, -20, 0, 35)
+        input.Position = UDim2.new(0, 10, 0, 50)
         input.Parent = container
         
         -- Button
         local btn = Instance.new("TextButton")
         btn.BackgroundColor3 = Color3.fromRGB(100, 150, 255)
         btn.BorderSizePixel = 0
-        btn.TextSize = 14
+        btn.TextSize = 13
         btn.TextColor3 = Color3.fromRGB(255, 255, 255)
         btn.Font = Enum.Font.GothamBold
         btn.Text = "VERIFY"
-        btn.Size = UDim2.new(1, -20, 0, 35)
-        btn.Position = UDim2.new(0, 10, 0, 100)
-        btn.ZIndex = 3
+        btn.Size = UDim2.new(1, -20, 0, 30)
+        btn.Position = UDim2.new(0, 10, 0, 95)
         btn.Parent = container
         
         btn.MouseButton1Click:Connect(function()
