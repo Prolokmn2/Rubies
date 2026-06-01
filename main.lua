@@ -74,7 +74,6 @@ local function CreateInlineModules()
         local screenGui = Instance.new("ScreenGui")
         screenGui.Name = "KeySystemUI"
         screenGui.ResetOnSpawn = false
-        screenGui.ZIndex = 999
         screenGui.Parent = parent
         
         -- Background
