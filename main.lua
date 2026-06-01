@@ -162,7 +162,6 @@ local function CreateInlineModules()
         local screenGui = Instance.new("ScreenGui")
         screenGui.Name = "RubiesLauncher"
         screenGui.ResetOnSpawn = false
-        screenGui.ZIndex = 50
         screenGui.Parent = parent
         
         -- Main frame
@@ -171,7 +170,7 @@ local function CreateInlineModules()
         frame.BorderSizePixel = 0
         frame.Size = UDim2.new(0, 500, 0, 400)
         frame.Position = UDim2.new(0.5, -250, 0.5, -200)
-        frame.ZIndex = 51
+        frame.ZIndex = 1
         frame.Parent = screenGui
         
         local corner = Instance.new("UICorner")
@@ -192,6 +191,7 @@ local function CreateInlineModules()
         title.Font = Enum.Font.GothamBold
         title.Text = "RUBIES LAUNCHER"
         title.Size = UDim2.new(1, 0, 0, 50)
+        title.ZIndex = 2
         title.Parent = frame
         
         -- Content
@@ -203,6 +203,7 @@ local function CreateInlineModules()
         content.Text = "Admin Panel Ready!\n\nKey Accepted: auraman\n\nUse this panel to manage scripts."
         content.Size = UDim2.new(1, -20, 1, -70)
         content.Position = UDim2.new(0, 10, 0, 50)
+        content.ZIndex = 2
         content.Parent = frame
         
         print("[RUBIES] UI Created!")
